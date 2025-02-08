@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Checker</title>
+    <style>
+        #btn1
+        {
+            width: 100px;
+        }
+       
+
+        .box {
+            width: 300px;
+            height: 400px;
+            border-radius: 20px;
+            margin: auto;
+            background-color: bisque;
+            padding-top: 20px;
+        }
+        img {
+            width: 150px;
+            height: 150px;
+        }
+        body{
+            background-color: rgb(190, 225, 139);
+        }
+        #container
+        {
+            text-align: center;
+            /* padding-top: 20px; */
+        }
+        h1{
+            font-size: 50px;
+        }
+
+        .vertical-space {
+            height: 30px;
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            background-color: blueviolet;
+            color: white;
+            border-radius: 20px;
+            border: blue;
+        }
+        #cityInfo
+        {
+            font-size: 25px;
+            /* text-align: center; */
+            color: black;
+            margin:auto;
+        }
+        #ip {
+            height: 40px;
+            width: 200px;
+            border-radius: 20px;
+            border: none;
+            padding: 0 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <h1>Weather Checker</h1>
+    
+    <div class="box">
+        <div class="cloud-image">
+            <img src="cloud_image.png" alt="">
+        </div>
+        <div>
+            <input type="text" id="ip" placeholder="Enter City Name?">
+        </div>
+        <div class="vertical-space"></div>
+        <div><button id="btn1">Get Weather</button></div>
+        <div class="vertical-space"></div>
+
+        <p id="cityInfo"></p>
+
+    </div>
+</div>
+<script>
+    let input=document.getElementById("ip");
+    let btn1=document.getElementById("btn1");
+    let area=document.getElementById("area");
+    let cityInfo=document.getElementById("cityInfo")
+    
+async function getdata(city)
+{
+    let promise= await fetch(`http://api.weatherapi.com/v1/current.json?key=e512f3909aa1408c93a194835243011&q=${city}&aqi=yes`)
+    return await promise.json();
+}
+
+    btn1.addEventListener("click",  async()=>
+{
+   
+    setTimeout(async()=>
+    {
+        
+        let city=input.value;
+        result=await getdata(city);
+        
+        if(result.error)
+        {
+            cityInfo.innerText=`Sorry ${city} Not Found!`
+         }
+        else
+         {
+           
+              cityInfo.innerText=`Temperature:${result.current.temp_c}C \n Condition:${result.current.condition.text} `    
+         }
+     
+console.log(result)    
+
+    },1000);
+      
+});
+   
+
+    
+</script>
+</body>
+</html>
